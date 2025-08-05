@@ -1,2 +1,2 @@
-# ESP32-Micropython-MQTT
+# ESP32-Micropython-MQTT-e-MySQL
 Solução para um exemplo de aplicação para ESP32 em MicroPython publicando em um MQTT e outra aplicação e transferindo os dados do MQTT para um banco de dados MySQL.
