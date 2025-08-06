@@ -13,6 +13,7 @@ async def main():
         async with client.messages() as messages:
             async for message in messages:
                 print(f'Mensagem recebida no tópico {message.topic}: {message.payload.decode()}')
+                # acrescentar depois o código para  extrair as informações do message.payload.decode() e enviar para o mysql.
 
 if __name__ == '__main__':
     asyncio.run(main())
