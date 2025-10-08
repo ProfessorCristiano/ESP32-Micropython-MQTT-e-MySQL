@@ -1,5 +1,7 @@
 # Professor Cristiano Teixeira.
 # Mudanças do original Sob Licença Apache 2.0
+# Baseado no original de Copyright (C) 2022, Uri Shaked.
+# https://wokwi.com/arduino/projects/315787266233467457
 
 """
 Para visualizar os dados:
