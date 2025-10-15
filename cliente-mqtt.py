@@ -32,8 +32,8 @@ app = Flask(__name__)
 def buscar_dados():
     conexao = mysql.connector.connect(
         host="localhost",
-        user="root",
-        password="@ITB123456",
+        user="seu_usuario",
+        password="sua_senha",
         database="mqtt_estufa"
     )
     consulta = """
