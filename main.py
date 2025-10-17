@@ -25,7 +25,8 @@ import dht
 import ujson
 from umqtt.simple import MQTTClient
 
-#As Instruções abaixo são somente para conectar a internet no wokwi. Remova esssas linhas no projeto físico, ou ajuste para sua rede wi-fi.
+#As Instruções abaixo são somente para conectar a internet no wokwi. 
+#Remova esssas linhas no projeto físico, ou ajuste-as no arquivo boot.py para sua rede wi-fi.
 '''
 print("Conectando no WiFi", end="")
 sta_if = network.WLAN(network.STA_IF)
