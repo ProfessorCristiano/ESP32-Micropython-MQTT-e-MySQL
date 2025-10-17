@@ -9,6 +9,8 @@ def connect_wifi(ssid, password):
         wlan.connect(ssid, password)
         while not wlan.isconnected():
             time.sleep(1)
+    wlan_mac = wlan_sta.config('mac')
+    print("MAC Address:", wlan_mac)  # Show MAC for peering
     print('Conexão estabelecida:', wlan.ifconfig())
 
 # Substitua 'seu_ssid' e 'sua_senha' pelos dados da sua rede Wi-Fi
