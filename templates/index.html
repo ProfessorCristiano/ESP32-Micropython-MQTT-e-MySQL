@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ESP32 MicroPython MQTT → MySQL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body>
+    <main class="container" role="main">
+        <h1>ESP32 + MicroPython • MQTT → MySQL</h1>
+        <p class="lead">
+            Este projeto coleta dados de dispositivos ESP32 executando MicroPython,
+            transmite via MQTT e persiste em um banco MySQL. O objetivo é fornecer um
+            fluxo simples para captura, transmissão e visualização de telemetria em tempo real.
+        </p>
+        <br>
+        <!--botão para acessar o dashboard-->
+        <button class="btn-destaque" type="button" onclick="window.location.href='/dashboard'">Acessar Dashboard</button>
+        <br>
+        <br>
+
+        <div class="foot">
+            Documentação e configurações estão disponíveis no repositório do projeto.
+            <a href="https://github.com/ProfessorCristiano/ESP32-Micropython-MQTT-e-MySQL">Projeto no GitHub</a>
+        </div>
+    </main>
+</body>
+</html>
