@@ -22,10 +22,12 @@ if sys.platform.lower() == "win32" or os.name.lower() == "nt":
     set_event_loop_policy(WindowsSelectorEventLoopPolicy())
 
 # Configurações do MQTT
+# Mude apenas o Tópico para o seu projeto
 TOPIC = 'Estufa'
 BROKER = 'broker.hivemq.com'
 PORT = 1883
 
+#carrega o flask como objeto
 app = Flask(__name__)
 
 # Função para conectar ao banco de dados e buscar os dados
@@ -43,6 +45,7 @@ def buscar_dados():
     """
     df = pd.read_sql(consulta, conexao)
     conexao.close()
+    # devolve a resposta da consulta como um objeto
     return df
 
 # Função para gerar o gráfico
@@ -78,6 +81,7 @@ def gerar_grafico(df):
             font=dict(size=24)    # legendas maiores
         )
     )
+    # devolve o gráfico em formato de imagem para html
     return pio.to_html(fig, full_html=False)
 
 # versão anterior mais simples apenas para fins educativos
@@ -104,6 +108,7 @@ def calcular_estatisticas(df):
         'umidade_media': df['dado_umid'].mean(),
         'temperatura_media': df['dado_temp'].mean()
     }
+    # devolve o dicionario stats populado com as informações já calculadas
     return stats
 
 #função para inserir no banco de dados
@@ -143,32 +148,43 @@ def index():
     # Renderiza o index.html ao acessar "/"
     return render_template("index.html")
 
+# Rota do dashboard
 @app.route('/dashboard')
 def dashboard():
+    #coleta dos dados
     df = buscar_dados()
+    #gera o gráfico
     grafico_html = gerar_grafico(df)
+    #calcula as estatisticas
     stats = calcular_estatisticas(df)
+    #devolve o gráfico e as estatisticas como paramentos de html para o dashboard.html
     return render_template(
         "dashboard.html",
         grafico_html=grafico_html,
         stats=stats
     )
 
+# função para iniciar o flask
 def iniciar_flask():
     app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
 
+# função assíncrona pois não sabemos quando o Broker MQTT será alimentado
 async def mqtt_main():
     try:
         async with Client(BROKER, PORT) as client:
+            # espera conexão com o BROKER
             await client.subscribe(TOPIC)
             print(f'Subscrito ao tópico {TOPIC}')
-
+            # quando receber a mensagem do tópico assinado
             async for message in client.messages:
                 print("--")
+                # a mensagem recebida está no formato MQTT e precisa ser decodificada para o python usá-la a resposta será uma string no formato JSON
                 payload_str = message.payload.decode()
                 print(f'Mensagem recebida no tópico {message.topic}: {payload_str}')
                 try:
+                    # Pegamos a string em formato JSON transformamos em um dicionário no Python  
                     dados = json.loads(payload_str)
+                    # extraimos dado a dado que queremos usar baseado na chave de cada dado presente no dicionário
                     temperatura = dados.get("Temperatura")
                     umidade = dados.get("Umidade")
                     timestamp = dados.get("Timestamp")
@@ -188,9 +204,9 @@ async def mqtt_main():
 
 if __name__ == '__main__':
     
-    # Iniciar Flask em uma thread
+    # Iniciar Flask em uma thread, assim não concorre com a função de coleta de dados
     flask_thread = threading.Thread(target=iniciar_flask)
     flask_thread.start()
     
-    # Iniciar MQTT com asyncio
+    # Iniciar MQTT com asyncio, assim só executa quando tem alteração
     asyncio.run(mqtt_main())
