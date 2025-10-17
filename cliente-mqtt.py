@@ -8,7 +8,7 @@ import os
 from aiomqtt import Client
 import json
 import mysql.connector
-from flask import Flask, render_template_string
+from flask import Flask, render_template, redirect, url_for
 from markupsafe import Markup
 import mysql.connector
 import pandas as pd
@@ -48,10 +48,47 @@ def buscar_dados():
 # Função para gerar o gráfico
 def gerar_grafico(df):
     fig = go.Figure()
+    # Linhas mais grossas (aumente 'line' width)
+    fig.add_trace(go.Scatter(
+        x=df['dado_data'],
+        y=df['dado_temp'],
+        mode='lines+markers',
+        name='Temperatura (°C)',
+        line=dict(width=4)  # mais grosso
+    ))
+    fig.add_trace(go.Scatter(
+        x=df['dado_data'],
+        y=df['dado_umid'],
+        mode='lines+markers',
+        name='Umidade (%)',
+        line=dict(width=4)  # mais grosso
+    ))
+    # Layout com fundo preto e área do gráfico cinza
+    fig.update_layout(
+        title='Temperatura e Umidade ao longo do tempo',
+        xaxis_title='Data',
+        yaxis_title='Valor',
+        plot_bgcolor='#23272e',   # cinza escuro para área do gráfico
+        paper_bgcolor='#111215',  # preto para fundo geral
+        font=dict(color='#e6eef6'),  # cor do texto
+        legend=dict(
+            #x=0, y=1,             # legenda à esquerda
+            #xanchor='left',
+            #yanchor='top',
+            font=dict(size=24)    # legendas maiores
+        )
+    )
+    return pio.to_html(fig, full_html=False)
+
+# versão anterior mais simples apenas para fins educativos
+'''
+def gerar_grafico(df):
+    fig = go.Figure()
     fig.add_trace(go.Scatter(x=df['dado_data'], y=df['dado_temp'], mode='lines+markers', name='Temperatura (°C)'))
     fig.add_trace(go.Scatter(x=df['dado_data'], y=df['dado_umid'], mode='lines+markers', name='Umidade (%)'))
     fig.update_layout(title='Temperatura e Umidade ao longo do tempo', xaxis_title='Data', yaxis_title='Valor')
     return pio.to_html(fig, full_html=False)
+'''
 
 # Função para calcular estatísticas
 def calcular_estatisticas(df):
@@ -103,45 +140,22 @@ def inserir_mysql(timestamp, temperatura, umidade):
 # Rota principal do site
 @app.route('/')
 def index():
+    # Renderiza o index.html ao acessar "/"
+    return render_template("index.html")
+
+@app.route('/dashboard')
+def dashboard():
     df = buscar_dados()
-    grafico_html = Markup(gerar_grafico(df))
+    grafico_html = gerar_grafico(df)
     stats = calcular_estatisticas(df)
-
-    html = f"""
-<html>
-<head>
-    <title>Dashboard Estufa</title>
-    <script>
-        setTimeout(function() {{
-            window.location.reload();
-        }}, 10000); // 10000 ms = 10 segundos
-    </script>
-</head>
-<body>
-    <h1>Dashboard Estufa</h1>
-    {{% raw %}}
-    {grafico_html}
-    {{% endraw %}}
-    <h2>Estatísticas</h2>
-    <ul>
-        <li>Umidade Máxima: {stats['umidade_max']}% em {stats['umidade_max_data']}</li>
-        <li>Umidade Mínima: {stats['umidade_min']}% em {stats['umidade_min_data']}</li>
-        <li>Temperatura Máxima: {stats['temperatura_max']}°C em {stats['temperatura_max_data']}</li>
-        <li>Temperatura Mínima: {stats['temperatura_min']}°C em {stats['temperatura_min_data']}</li>
-        <li>Média da Umidade: {stats['umidade_media']:.2f}%</li>
-        <li>Média da Temperatura: {stats['temperatura_media']:.2f}°C</li>
-    </ul>
-</body>
-</html>
-"""
-    
-    
-    return render_template_string(html)
-
+    return render_template(
+        "dashboard.html",
+        grafico_html=grafico_html,
+        stats=stats
+    )
 
 def iniciar_flask():
     app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
-
 
 async def mqtt_main():
     try:
@@ -168,14 +182,9 @@ async def mqtt_main():
 
                 except json.JSONDecodeError:
                     print("Erro ao decodificar o payload JSON.")
-
-
-                    
+               
     except Exception as e:
         print(f'Erro inesperado: {e}')
-
-
-
 
 if __name__ == '__main__':
     
