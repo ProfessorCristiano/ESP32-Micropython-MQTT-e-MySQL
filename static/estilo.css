@@ -1,0 +1,260 @@
+/* estilo.css
+    Tema: Escuro e moderno (glassmorphism leve)
+    Use classes: .container, .card, .chart-card, .btn, .form-control, .table, etc.
+*/
+
+/* Variáveis de tema */
+:root{
+    --bg:#0b0f14;                /* fundo principal */
+    --bg-2:#0f1317;              /* fundo secundário */
+    --surface: rgba(255,255,255,0.03);
+    --glass: rgba(255,255,255,0.025);
+    --glass-border: rgba(255,255,255,0.04);
+    --muted: rgba(255,255,255,0.55);
+    --text:#e6eef6;
+    --accent:#6ee7b7;            /* verde água */
+    --accent-2:#7cc4ff;         /* azul suave */
+    --danger:#ff7a7a;
+    --success:#6fe29a;
+    --radius:12px;
+    --shadow: 0 6px 24px rgba(2,6,12,0.6);
+    --glass-blur: 8px;
+    --transition: 200ms cubic-bezier(.2,.9,.2,1);
+    font-synthesis: none;
+  }
+  
+  /* Reset simples */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    padding:28px;
+    background:
+       radial-gradient(600px 400px at 10% 10%, rgba(124,196,255,0.04), transparent 10%),
+       radial-gradient(500px 360px at 90% 90%, rgba(110,231,183,0.03), transparent 10%),
+       var(--bg);
+    color:var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.4;
+  }
+  
+  /* Layout container */
+  .container{
+    max-width:1200px;
+    margin:0 auto;
+    padding:24px;
+  }
+  
+  /* Cabeçalho / top bar */
+  .header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .logo{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    font-weight:600;
+    letter-spacing:0.2px;
+  }
+  .logo .symbol{
+    width:44px;height:44px;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow: 0 6px 18px rgba(124,196,255,0.08);
+    display:flex;align-items:center;justify-content:center;
+    color:#02101a;font-weight:700;font-size:18px;
+  }
+  
+  /* Cards */
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius);
+    padding:18px;
+    border:1px solid var(--glass-border);
+    box-shadow:var(--shadow);
+    backdrop-filter: blur(var(--glass-blur));
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 14px 36px rgba(2,6,12,0.65);
+  }
+  
+  /* Grid para painéis */
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap:18px;
+  }
+  .col-12{grid-column: span 12; }
+  .col-8{grid-column: span 8; }
+  .col-6{grid-column: span 6; }
+  .col-4{grid-column: span 4; }
+  .col-3{grid-column: span 3; }
+  
+  /* Gráficos */
+  .chart-card{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .chart-card .chart-header{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .chart-card canvas{
+    width:100% !important;
+    height:320px !important;
+    display:block;
+    border-radius:10px;
+  }
+  
+  /* Estilização de legendas/indicadores próximos ao canvas */
+  .chart-legend{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .legend-item{display:flex;gap:8px;align-items:center}
+  .legend-swatch{
+    width:12px;height:12px;border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,0.4);
+  }
+  
+  /* Botões */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:14px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition: all var(--transition);
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    color:var(--text);
+  }
+  .btn-primary{
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color:#021018;
+    border:1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 8px 28px rgba(108,200,255,0.06);
+  }
+  .btn-ghost{
+    background:transparent;
+    border:1px solid var(--glass-border);
+    color:var(--muted);
+  }
+  .btn:hover{ transform: translateY(-3px) }
+
+  .btn-destaque{
+    background:linear-gradient(180deg, rgba(95, 2, 182, 0.692), rgba(255,255,255,0.01));
+    color:aliceblue;
+    border:1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 8px 28px rgba(108,200,255,0.06);
+    font-size:24px;
+    cursor: pointer;
+  }
+  
+  /* Form controls */
+  .form-control{
+    width:100%;
+    padding:10px 12px;
+    border-radius:10px;
+    background:transparent;
+    border:1px solid var(--glass-border);
+    color:var(--text);
+    outline:none;
+    transition:box-shadow var(--transition), border-color var(--transition);
+  }
+  .form-control:focus{
+    border-color: rgba(124,196,255,0.9);
+    box-shadow: 0 6px 20px rgba(124,196,255,0.06);
+  }
+  
+  /* Tabelas */
+  .table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+    color:var(--muted);
+  }
+  .table th, .table td{
+    text-align:left;
+    padding:12px 10px;
+    border-bottom:1px solid rgba(255,255,255,0.02);
+  }
+  .table thead th{
+    color:var(--muted);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.2px;
+  }
+  
+  /* KPIs / mini cards */
+  .kpi{
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .kpi .value{font-size:20px;font-weight:700;color:var(--text)}
+  .kpi .label{font-size:12px;color:var(--muted)}
+  
+  /* Badges e status */
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:999px;font-size:12px;
+    background:rgba(255,255,255,0.02);color:var(--muted);border:1px solid rgba(255,255,255,0.02)
+  }
+  .status-dot{width:10px;height:10px;border-radius:50%}
+  .status-dot.online{background:var(--success)}
+  .status-dot.offline{background:var(--danger)}
+  .status-dot.warn{background:#ffd36e}
+  
+  /* Pequenas utilidades */
+  .muted{color:var(--muted)}
+  .small{font-size:12px;color:var(--muted)}
+  .center{display:flex;align-items:center;justify-content:center}
+  .round{border-radius:999px}
+  
+  /* Scrollbar estilizada (WebKit) */
+  ::-webkit-scrollbar{height:10px;width:10px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  
+  /* Responsividade */
+  @media (max-width:900px){
+    .grid{grid-template-columns: repeat(6,1fr)}
+    .col-8{grid-column: span 6}
+    .col-6{grid-column: span 6}
+    .col-4{grid-column: span 6}
+  }
+  @media (max-width:520px){
+    .grid{grid-template-columns: repeat(2,1fr); gap:12px}
+    .card{padding:14px}
+    body{padding:16px}
+  }
+  
+  /* Sugestões de integração com Chart.js:
+      - Configure no options/plugins/legend labels color: document body color ou var(--muted)
+      - plugins.tooltip.backgroundColor: '#0b1114' e titleColor/labelColor = var(--text)
+      - axes ticks color: var(--muted)
+  */
+  
+  /* Pequena animação para realçar pontos ao passar o mouse */
+  .point-glow{
+    transition: box-shadow 160ms ease, transform 160ms ease;
+  }
+  .point-glow:hover{
+    transform: scale(1.06);
+    box-shadow: 0 6px 20px rgba(124,196,255,0.12);
+  }
