@@ -111,9 +111,9 @@ def inserir_mysql(timestamp, temperatura, umidade):
     try:
         conexao = mysql.connector.connect(
             host="localhost",         # ou IP do servidor MySQL
-            user="root",       # substitua pelo seu usuário
-            password="@ITB123456",     # substitua pela sua senha
-            database="mqtt_estufa"  # substitua pelo nome do seu banco
+            user="seu_usuario",       # substitua pelo seu usuário
+            password="sua_senha",     # substitua pela sua senha
+            database="mqtt_estufa"    # substitua pelo nome do seu banco
         )
 
         cursor = conexao.cursor()
