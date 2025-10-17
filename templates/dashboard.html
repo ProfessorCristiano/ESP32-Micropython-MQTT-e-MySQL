@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>Dashboard Estufa</title>
+    <script>
+        setTimeout(function() {
+            window.location.reload();
+        }, 10000); // 10000 ms = 10 segundos
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body>
+    <h1>Dashboard Estufa</h1>
+    {{ grafico_html|safe }}
+    <h2>Estatísticas</h2>
+    <ul>
+        <li>Umidade Máxima: {{ stats.umidade_max }}% em {{ stats.umidade_max_data }}</li>
+        <li>Umidade Mínima: {{ stats.umidade_min }}% em {{ stats.umidade_min_data }}</li>
+        <li>Temperatura Máxima: {{ stats.temperatura_max }}°C em {{ stats.temperatura_max_data }}</li>
+        <li>Temperatura Mínima: {{ stats.temperatura_min }}°C em {{ stats.temperatura_min_data }}</li>
+        <li>Média da Umidade: {{ stats.umidade_media|round(2) }}%</li>
+        <li>Média da Temperatura: {{ stats.temperatura_media|round(2) }}°C</li>
+    </ul>
+</body>
+</html>
